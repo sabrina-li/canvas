@@ -6,8 +6,8 @@ canvas.width = window.innerWidth;
 
 
 var font = "100px Arial";
-var maxR = 10,
-    minR = 5;
+var maxR = 0,
+    minR = 2;
 var x = 100,y=100;
 
 
@@ -32,16 +32,39 @@ class Particles{
 
 function drawText(text){
     c.clearRect(0,0,canvas.width,canvas.height);
-    c.fillStyle = "#000000";
+    c.fillStyle = 255;
     c.font = font;
     c.fillText(text,100,100);
 }
 
+var particles = [];
 function initialPositions(){
+    particles = [];
+    console.log("here")
+    data = c.getImageData(0,0,canvas.width,canvas.height).data;
+    console.log(data);
+    for(h=0;h<canvas.height;h=h+2){
+        for(w=0;w<canvas.width;w=w+2){
+            var color = data[((h * ( canvas.width * 4)) + (w * 4)) - 1];
+
+            if (color == 255) {
+                particles.push(new Particles(w,h,"red"));
+                console.log("here")
+            }
+        }
+    }
+    c.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(function(p){
+        p.draw();
+    })
     
 }
 
 
-let p = new Particles(x,y,"red");
-p.draw();
+// let p = new Particles(x,y,"red");
+
 drawText("test")
+
+initialPositions();
+// drawText("test")
+
